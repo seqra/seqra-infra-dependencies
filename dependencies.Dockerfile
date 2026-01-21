@@ -4,31 +4,31 @@ RUN apt-get update && apt-get install -y -q --no-install-recommends ca-certifica
     && update-locale LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 
-# Java 8, 11, 17, latest (23)
+# Java 8, 11, 17, latest (25)
 RUN wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor | tee /etc/apt/trusted.gpg.d/adoptium.gpg > /dev/null \
     && echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list \
     && apt update \
     && apt install -y -q --no-install-recommends temurin-8-jdk  && mv /usr/lib/jvm/temurin-8-jdk* /usr/lib/jvm/8-jdk \
     && apt install -y -q --no-install-recommends temurin-11-jdk && mv /usr/lib/jvm/temurin-11-jdk* /usr/lib/jvm/11-jdk \
-    && apt install -y -q --no-install-recommends temurin-23-jdk && mv /usr/lib/jvm/temurin-23-jdk* /usr/lib/jvm/23-jdk \
+    && apt install -y -q --no-install-recommends temurin-25-jdk && mv /usr/lib/jvm/temurin-25-jdk* /usr/lib/jvm/25-jdk \
     && apt install -y -q --no-install-recommends temurin-17-jdk && mv /usr/lib/jvm/temurin-17-jdk* /usr/lib/jvm/17-jdk \
     && rm /usr/bin/java && ln -s /usr/lib/jvm/17-jdk/bin/java /usr/bin/java \
     && rm -rf /var/lib/apt/lists/*
 RUN ARCH=$(uname -m) \
     && echo "Detected architecture: $ARCH" \
     && if [ "$ARCH" = "aarch64" ]; then \
-         mkdir -p /root/.seqra/jdk/temurin-23-jdk-linux-aarch64/bin && \
-         ln -sf /usr/lib/jvm/23-jdk/bin/java /root/.seqra/jdk/temurin-23-jdk-linux-aarch64/bin/java ; \
+         mkdir -p /root/.seqra/jdk/temurin-17-jdk-linux-aarch64/bin && \
+         ln -sf /usr/lib/jvm/17-jdk/bin/java /root/.seqra/jdk/temurin-17-jdk-linux-aarch64/bin/java ; \
        elif [ "$ARCH" = "x86_64" ]; then \
-         mkdir -p /root/.seqra/jdk/temurin-23-jdk-linux-x64/bin && \
-         ln -sf /usr/lib/jvm/23-jdk/bin/java /root/.seqra/jdk/temurin-23-jdk-linux-x64/bin/java ; \
+         mkdir -p /root/.seqra/jdk/temurin-17-jdk-linux-x64/bin && \
+         ln -sf /usr/lib/jvm/17-jdk/bin/java /root/.seqra/jdk/temurin-17-jdk-linux-x64/bin/java ; \
        else \
          echo "Unsupported architecture: $ARCH"; \
        fi
 ENV JAVA_8_HOME=/usr/lib/jvm/8-jdk
 ENV JAVA_11_HOME=/usr/lib/jvm/11-jdk
 ENV JAVA_17_HOME=/usr/lib/jvm/17-jdk
-ENV JAVA_LATEST_HOME=/usr/lib/jvm/23-jdk
+ENV JAVA_LATEST_HOME=/usr/lib/jvm/25-jdk
 
 # Gradle
 ENV GRADLE_VERSION=gradle-8.10
