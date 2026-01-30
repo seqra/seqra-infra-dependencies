@@ -10,8 +10,9 @@ RUN wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gp
     && apt update \
     && apt install -y -q --no-install-recommends temurin-8-jdk  && mv /usr/lib/jvm/temurin-8-jdk* /usr/lib/jvm/8-jdk \
     && apt install -y -q --no-install-recommends temurin-11-jdk && mv /usr/lib/jvm/temurin-11-jdk* /usr/lib/jvm/11-jdk \
-    && apt install -y -q --no-install-recommends temurin-25-jdk && mv /usr/lib/jvm/temurin-25-jdk* /usr/lib/jvm/25-jdk \
     && apt install -y -q --no-install-recommends temurin-17-jdk && mv /usr/lib/jvm/temurin-17-jdk* /usr/lib/jvm/17-jdk \
+    && apt install -y -q --no-install-recommends temurin-21-jdk && mv /usr/lib/jvm/temurin-21-jdk* /usr/lib/jvm/21-jdk \
+    && apt install -y -q --no-install-recommends temurin-25-jdk && mv /usr/lib/jvm/temurin-25-jdk* /usr/lib/jvm/25-jdk \
     && rm /usr/bin/java && ln -s /usr/lib/jvm/17-jdk/bin/java /usr/bin/java \
     && rm -rf /var/lib/apt/lists/*
 RUN ARCH=$(uname -m) \
@@ -28,6 +29,7 @@ RUN ARCH=$(uname -m) \
 ENV JAVA_8_HOME=/usr/lib/jvm/8-jdk
 ENV JAVA_11_HOME=/usr/lib/jvm/11-jdk
 ENV JAVA_17_HOME=/usr/lib/jvm/17-jdk
+ENV JAVA_21_HOME=/usr/lib/jvm/21-jdk
 ENV JAVA_LATEST_HOME=/usr/lib/jvm/25-jdk
 
 # Gradle
