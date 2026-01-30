@@ -18,11 +18,11 @@ RUN wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gp
 RUN ARCH=$(uname -m) \
     && echo "Detected architecture: $ARCH" \
     && if [ "$ARCH" = "aarch64" ]; then \
-         mkdir -p /root/.seqra/jdk/temurin-17-jdk-linux-aarch64/bin && \
-         ln -sf /usr/lib/jvm/17-jdk/bin/java /root/.seqra/jdk/temurin-17-jdk-linux-aarch64/bin/java ; \
+         mkdir -p /root/.seqra/jdk/temurin-21-jdk-linux-aarch64/bin && \
+         ln -sf /usr/lib/jvm/21-jdk/bin/java /root/.seqra/jdk/temurin-21-jdk-linux-aarch64/bin/java ; \
        elif [ "$ARCH" = "x86_64" ]; then \
-         mkdir -p /root/.seqra/jdk/temurin-17-jdk-linux-x64/bin && \
-         ln -sf /usr/lib/jvm/17-jdk/bin/java /root/.seqra/jdk/temurin-17-jdk-linux-x64/bin/java ; \
+         mkdir -p /root/.seqra/jdk/temurin-21-jdk-linux-x64/bin && \
+         ln -sf /usr/lib/jvm/21-jdk/bin/java /root/.seqra/jdk/temurin-21-jdk-linux-x64/bin/java ; \
        else \
          echo "Unsupported architecture: $ARCH"; \
        fi
