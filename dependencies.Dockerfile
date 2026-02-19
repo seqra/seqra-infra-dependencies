@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y -q --no-install-recommends ca-certifica
     && update-locale LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 
-# Java 8, 11, 17, latest (25)
+# Java 8, 11, 17, 21, latest (25)
 RUN wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor | tee /etc/apt/trusted.gpg.d/adoptium.gpg > /dev/null \
     && echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list \
     && apt update \
@@ -15,22 +15,6 @@ RUN wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gp
     && apt install -y -q --no-install-recommends temurin-25-jdk && mv /usr/lib/jvm/temurin-25-jdk* /usr/lib/jvm/25-jdk \
     && rm /usr/bin/java && ln -s /usr/lib/jvm/17-jdk/bin/java /usr/bin/java \
     && rm -rf /var/lib/apt/lists/*
-RUN ARCH=$(uname -m) \
-    && echo "Detected architecture: $ARCH" \
-    && if [ "$ARCH" = "aarch64" ]; then \
-         mkdir -p /root/.seqra/jdk/temurin-21-jdk-linux-aarch64/bin && \
-         ln -sf /usr/lib/jvm/21-jdk/bin/java /root/.seqra/jdk/temurin-21-jdk-linux-aarch64/bin/java ; \
-       elif [ "$ARCH" = "x86_64" ]; then \
-         mkdir -p /root/.seqra/jdk/temurin-21-jdk-linux-x64/bin && \
-         ln -sf /usr/lib/jvm/21-jdk/bin/java /root/.seqra/jdk/temurin-21-jdk-linux-x64/bin/java ; \
-       else \
-         echo "Unsupported architecture: $ARCH"; \
-       fi
-ENV JAVA_8_HOME=/usr/lib/jvm/8-jdk
-ENV JAVA_11_HOME=/usr/lib/jvm/11-jdk
-ENV JAVA_17_HOME=/usr/lib/jvm/17-jdk
-ENV JAVA_21_HOME=/usr/lib/jvm/21-jdk
-ENV JAVA_LATEST_HOME=/usr/lib/jvm/25-jdk
 
 # Gradle
 ENV GRADLE_VERSION=gradle-8.10
@@ -52,4 +36,13 @@ RUN apt-get update && apt-get install -y -q --no-install-recommends \
                 && rm -rf /var/lib/apt/lists/* \
                 && rm /opt/maven/*/conf/settings.xml \
                 && ln -s /opt/maven/*/bin/mvn /usr/bin/mvn \
-                && ln -s /opt/gradle/*/bin/gradle /usr/bin/gradle \
+                && ln -s /opt/gradle/*/bin/gradle /usr/bin/gradle
+
+ENV JAVA_8_HOME=/usr/lib/jvm/8-jdk
+ENV JAVA_11_HOME=/usr/lib/jvm/11-jdk
+ENV JAVA_17_HOME=/usr/lib/jvm/17-jdk
+ENV JAVA_21_HOME=/usr/lib/jvm/21-jdk
+ENV JAVA_LATEST_HOME=/usr/lib/jvm/25-jdk
+
+RUN mkdir -p /usr/local/lib/seqra/jre/bin \
+    && ln -sf /usr/lib/jvm/21-jdk/bin/java /usr/local/lib/seqra/jre/bin/java
